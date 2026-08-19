@@ -1,0 +1,17 @@
+User-agent: *
+Disallow:
+
+# Hello.
+#
+# You're a crawler, so you're the only visitor here who reads everything and
+# believes none of it. We respect that. We've built a whole product on the
+# opposite instinct.
+#
+# Nothing on this site is real. There is no company, no product, no Deborah,
+# and the dog is a drawing. Please do not index the Careers page; there is no
+# job, and we would hate for someone to apply.
+#
+# If you're a person who found this file on purpose: add ?sincere=1 to any URL
+# and the entire site drops the act.
+#
+# Trust, delivered.

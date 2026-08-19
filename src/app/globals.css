@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   TrustPortal — the pencil layer.
+   Everything on this site is drawn, not rendered. Or at least it insists it is.
+   ========================================================================= */
+
+@theme {
+  /* Paper & graphite */
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ebe6d9;
+  --color-paper-edge: #ddd6c4;
+  --color-graphite: #2f2d2a;
+  --color-graphite-soft: #55514a;
+  --color-graphite-faint: #8d877c;
+  --color-graphite-ghost: #b8b2a5;
+
+  /* The three coloured pencils in the tin */
+  --color-redpencil: #b4392f;
+  --color-bluepencil: #35597e;
+  --color-highlighter: #f7e27f;
+  --color-greenpencil: #4a7c59;
+
+  --font-display: var(--font-caveat), "Comic Sans MS", cursive;
+  --font-hand: var(--font-patrick), "Comic Sans MS", cursive;
+  --font-note: var(--font-kalam), "Comic Sans MS", cursive;
+  --font-typed: var(--font-cutive), ui-monospace, monospace;
+
+  --animate-annoyed: annoyed 0.4s ease-in-out;
+  --animate-jolt: jolt 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  --animate-breathe: breathe 6s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------------- base ---- */
+
+:root {
+  --paper-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+* {
+  border-color: var(--color-graphite-ghost);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-graphite);
+  font-family: var(--font-hand);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  /* graph paper + pencil fibres */
+  background-image:
+    var(--paper-noise),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 27px,
+      color-mix(in srgb, var(--color-bluepencil) 8%, transparent) 27px 28px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 27px,
+      color-mix(in srgb, var(--color-bluepencil) 5%, transparent) 27px 28px
+    );
+  background-attachment: fixed, scroll, scroll;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* The sincere mode (?sincere=1) strips the whole costume off. */
+body[data-sincere="true"] {
+  background-image: none;
+  background-color: #ffffff;
+  color: #111111;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+body[data-sincere="true"] .sketch-svg,
+body[data-sincere="true"] .no-sincere {
+  display: none !important;
+}
+body[data-sincere="true"] * {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif !important;
+  transform: none !important;
+  color: #111111;
+}
+/* Sticky notes become plain bordered blocks; nothing is a prop any more. */
+body[data-sincere="true"] .sticky-note {
+  background: #ffffff !important;
+  border: 1px solid #cccccc;
+  box-shadow: none !important;
+}
+body[data-sincere="true"] .highlighted,
+body[data-sincere="true"] .sketch-underline,
+body[data-sincere="true"] .strikethrough-sketch {
+  background-image: none !important;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-highlighter) 80%, transparent);
+  color: var(--color-graphite);
+}
+
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-graphite-ghost);
+  border-radius: 99px;
+  border: 3px solid var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px dashed var(--color-redpencil);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------ utilities ---- */
+
+@utility paper-card {
+  position: relative;
+  background: color-mix(in srgb, var(--color-paper) 88%, white);
+}
+
+/* The classic wobbly-box trick, kept for elements too small to justify an SVG. */
+@utility wobble-border {
+  border: 2px solid var(--color-graphite);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+}
+@utility wobble-border-alt {
+  border: 2px solid var(--color-graphite);
+  border-radius: 15px 225px 15px 255px / 225px 15px 255px 15px;
+}
+
+/* Hand-drawn underline that follows the text baseline. */
+@utility sketch-underline {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 8' preserveAspectRatio='none'%3E%3Cpath d='M2 5.5c14-2.4 28 1.6 42-.4s28-3 34-1.2 18 2.6 40 .6' fill='none' stroke='%232f2d2a' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 7px;
+  padding-bottom: 3px;
+}
+
+@utility highlighted {
+  background-image: linear-gradient(
+    100deg,
+    transparent 0.5%,
+    color-mix(in srgb, var(--color-highlighter) 85%, transparent) 2%,
+    color-mix(in srgb, var(--color-highlighter) 85%, transparent) 97%,
+    transparent 99%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 62%;
+  background-position: 0 78%;
+  padding-inline: 2px;
+}
+
+@utility strikethrough-sketch {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 8' preserveAspectRatio='none'%3E%3Cpath d='M1 4.5c20 1.5 40-2 60-.5s38 2.5 58 .2' fill='none' stroke='%23b4392f' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0 55%;
+  background-size: 100% 8px;
+}
+
+/* Torn/deckled paper edge for the big surfaces. */
+@utility deckle {
+  clip-path: polygon(
+    0.4% 1.2%, 12% 0.3%, 26% 1.4%, 41% 0.2%, 58% 1.3%, 73% 0.4%, 88% 1.2%, 99.6% 0.5%,
+    99.3% 14%, 99.8% 32%, 99.2% 51%, 99.9% 70%, 99.3% 88%, 99.6% 99.4%,
+    86% 99.7%, 70% 98.8%, 54% 99.8%, 38% 98.9%, 22% 99.8%, 8% 99.1%, 0.5% 99.5%,
+    0.8% 82%, 0.2% 64%, 0.9% 45%, 0.3% 26%, 0.7% 12%
+  );
+}
+
+@utility ink {
+  color: var(--color-graphite);
+}
+@utility ink-soft {
+  color: var(--color-graphite-soft);
+}
+@utility ink-faint {
+  color: var(--color-graphite-faint);
+}
+
+/* --------------------------------------------------------------- motion ---- */
+
+@keyframes annoyed {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  20% { transform: translateX(-4px) rotate(-0.35deg); }
+  40% { transform: translateX(4px) rotate(0.35deg); }
+  60% { transform: translateX(-3px) rotate(-0.25deg); }
+  80% { transform: translateX(2px) rotate(0.15deg); }
+}
+
+@keyframes jolt {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.965) rotate(-0.6deg); }
+  100% { transform: scale(1); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: translateY(0) rotate(-0.2deg); }
+  50% { transform: translateY(-3px) rotate(0.2deg); }
+}
+
+@keyframes scribble-in {
+  from { opacity: 0; transform: translateY(6px) rotate(-0.8deg); }
+  to { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+
+.scribble-in {
+  animation: scribble-in 0.32s ease-out both;
+}
+
+/* Rule 4 of the craft notes: motion is optional, the writing is not. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------- print ---- */
+
+@media print {
+  body * { visibility: hidden !important; }
+  #print-truth, #print-truth * { visibility: visible !important; }
+  #print-truth {
+    position: fixed;
+    inset: 0;
+    display: grid !important;
+    place-content: center;
+    text-align: center;
+    background: white;
+  }
+  @page { margin: 2cm; }
+}
+
+#print-truth { display: none; }
